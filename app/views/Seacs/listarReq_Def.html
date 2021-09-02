@@ -1,0 +1,49 @@
+#{extends 'main.html' /} #{set title:'Pagina Inicial'/}
+<style>
+
+h1 {
+	text-aligner: center;
+}
+
+#req01 {
+	text-align: center;
+	margin-top: 40px;
+}
+
+form {
+	display: flex;
+}
+
+#req02 {
+	text-align: center;
+	margin-top: 40px;
+}
+
+iframe {
+	width: 600px;
+	height: 832px;
+}
+
+h3 {
+	margin-top: 60px;
+}
+</style>
+<body>
+	<h1>REQUERIMENTOS PROCESSADOS</h1>
+	<div id="req01">	
+    	<form class="form-inline my-2 my-lg-0" action="@{Seacs.listarReq_Def}">
+	      <input name="busca" class="form-control mr-sm-2" type="search" placeholder="Digite o numero do processo" aria-label="Pesquisar">
+	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+	    </form>
+	</div>
+	<div id="req02">
+	
+	#{list items:professores, as:'professor'}
+	#{if professor?.requerimento}
+		<h3> Situacao do Requerimento: ${professor?.situacao}<br>Numero do Processo: ${professor?.numero}</h3>
+		<iframe src="../devolver/${professor?.requerimento}" ></iframe>
+	#{/if}
+	#{/list}
+
+	</div>
+</body>

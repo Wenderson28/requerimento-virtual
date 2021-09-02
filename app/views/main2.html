@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>#{get 'title' /}</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<link rel="shortcut icon" type="image/x-icon" href="https://media.discordapp.net/attachments/768553811064127528/867418706131681290/PicsArt_07-21-11.51.39.png?width=577&height=577">
+
+<style type="text/css">
+
+/*
+#3DE6AF - Verde
+#0D6EFD - Azul claro
+#082336 - Azul Escuro
+*/
+
+body {
+	background-color: #ECEFF8;
+}
+
+#deitar {
+	display: flex;
+}
+
+#deitar h1 {
+	color: #3DE6AF;
+	padding: 10px;
+}
+
+.parte01 {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	background-color: #082336;
+	height: 80px;
+	padding: 5px 20px 5px 5px;
+}
+
+.parte01 button {
+	display: flex;
+	margin-left: auto;
+	border: none;
+	background-image: url('https://media.discordapp.net/attachments/768553811064127528/867418706131681290/PicsArt_07-21-11.51.39.png?width=577&height=577');
+	background-size: 70px 70px;
+	height: 70px;  
+	width: 70px;
+	border-radius: 100%;
+}
+
+.parte01 button img {
+	display: flex;
+	height: 50px;
+	padding: 5px;
+}
+
+.parte01 button:hover {
+	box-shadow: 0px 0px 3px #3DE6AF;
+}
+
+#fi00 {
+	width: 200px;
+	margin-left: auto;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+.flexivel01 {
+	display: flex;
+}
+
+.parte02 {
+	position: fixed;
+	top: 80px;
+	left: 0px;
+	bottom: 0px;
+
+	background-color: #082336;
+
+	width: 250px;
+}
+
+.parte02 ul {
+
+	color: white;
+	list-style-type: none;
+	padding: 15px 0px 0px 0px;
+	font-weight: bolder;
+	text-decoration: none;
+
+}
+
+.ul01 {
+	font-weight: bold;
+	color: white;
+	text-decoration: none;
+}
+
+
+.parte02 ul a {
+	height: 30px;
+	width: 250px;
+	display: block;
+	padding: 0px 0px 0px 22px;
+}
+
+.parte02 ul p {
+	padding: 0px 0px 0px 20px;
+}
+
+.parte02 ul li a {
+	font-weight: 300;
+	height: 30px;
+	width: 250px;
+	display: block;
+	padding: 0px 0px 0px 45px;
+	color: white;
+	text-decoration: none;
+}
+
+.parte02 ul a:hover {
+	color: #082336;
+	background-color: #3DE6AF;
+}
+#lov02 {
+	color: red;
+}
+
+.parte03 {
+	margin: auto;
+	padding: 110px 40px 40px 300px; 
+}
+
+.list-group {
+	position: relative;
+	text-align: center;
+	box-shadow: 0px 0px 2px;
+}
+
+#mostrar {
+	display: none;
+}
+
+.iconify{
+	margin: 0px 0px 5px 0px;
+}
+
+
+/*------------------------------------------------------------------------------*/
+
+.parte03 h2 {
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+#{get 'moreStyles' /}
+
+</style>
+<script type="text/javascript">
+	function ver() {
+		var topicos=document.getElementById("mostrar");
+
+		if(topicos.style.display === "inline"){
+			topicos.style.display="none";
+		}else {
+			topicos.style.display="inline";
+		}
+	}
+</script>
+
+<body>
+	<div class="parte01">
+		<div id="deitar">
+			<h1>REQUERIMENTO VIRTUAL - ALUNO</h1>
+			<button onclick="ver()"></button>
+		</div>
+		<div id="mostrar">
+			<fieldset id="fi00">
+				<div class="list-group">
+					<a class="list-group-item list-group-item-action active" aria-current="true">${session.get("nomeUsuario")}</a>
+					<a href="pagina_meu_perfil.html" class="list-group-item list-group-item-action" id="lov01"><span class="iconify" data-icon="gg:profile" data-inline="false"></span>	Meu Perfil</a>
+					<a href="@{Login.logout}" class="list-group-item list-group-item-action" id="lov02"><span class="iconify" data-icon="ant-design:logout-outlined" data-inline="false"></span> Sair</a>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div class="flexivel01">
+		<div class="parte02">
+			<ul><a href="@{Alunos.inicio}" class="ul01">🏠 Início</a></ul>
+			<ul><p>⚙ Funcionalidades</p>
+				<li><a href="@{Alunos.abrirReq}">Abrir Requerimento</a></li>
+				<li><a href="@{Alunos.sitReq}">Situação do requerimento</a></li>
+				
+			</ul>
+			<ul><p>☎ Suporte</p>
+				<li><a href="#">Contato</a></li>
+				<li><a href="#">Sugestão</a></li>
+			</ul>
+		</div>
+		<div class="parte03">
+				#{doLayout /}
+		</div>
+	</div>
+
+	<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

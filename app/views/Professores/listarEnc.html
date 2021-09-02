@@ -1,0 +1,51 @@
+#{extends 'main3.html' /} #{set title:'Pagina Inicial'/}
+<style>
+
+h1 {
+	text-aligner: center;
+}
+
+#req01 {
+	text-align: center;
+	margin-top: 40px;
+}
+
+form {
+	display: flex;
+}
+
+#req02 {
+	text-align: center;
+	margin-top: 40px;
+}
+
+iframe {
+	width: 600px;
+	height: 832px;
+}
+
+h3 {
+	margin-top: 60px;
+}
+</style>
+<body>
+	<h1>REQUERIMENTO PARA PROCESSO</h1>
+	<div id="req01">	
+    	<form class="form-inline my-2 my-lg-0" action="@{Professores.listarEnc}">
+	      <input name="busca" class="form-control mr-sm-2" type="search" placeholder="Digite o numero do processo" aria-label="Pesquisar">
+	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+	    </form>
+	</div>
+	<div id="req02">
+	
+	#{list items:professores, as:'professor'}
+	#{if professor?.requerimento_prof}
+		<h3> Nome Professor: ${professor?.nome_prof}<br>Numero do Processo: ${professor?.numero_pro}</h3>
+		<iframe src="../encaminhados/${professor?.requerimento_prof}" ></iframe><br><br>
+		<a href="../encaminhados/${professor?.requerimento_prof}" download><p style="font-size:30px">Baixar Modelo</p></a>
+	#{/if}
+	#{/list}
+
+	</div>
+</body>
+
