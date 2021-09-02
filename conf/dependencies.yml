@@ -4,4 +4,3 @@ require:
     - play
     - org.postgresql -> postgresql 9.4.1212:
       force: true
-    	
