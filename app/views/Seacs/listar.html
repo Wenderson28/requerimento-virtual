@@ -1,4 +1,4 @@
-#{extends 'main.html' /} #{set title:'Pagina Inicial'/}
+#{extends 'main.html' /} #{set title:'RV - Listagem'/}
 <style>
 .parte03 h2 {
 	text-align: center;
@@ -21,11 +21,6 @@
 	width: 30px;
 }
 
-.iconify {
-	width: 30px;
-	height: 30px;
-}
-
 .iconify:hover {
 	color: #000e54;
 }
@@ -33,13 +28,15 @@
 .table td, .table th {
 	padding: 15px 35px;
 }
+
+#ghh {
+	margin-top: 30px;
+}
 </style>
 <body>
-
-
-	<h2>LISTAGEM</h2>
+	<h3>Listagem</h3>
 	<div class="flexivel02">
-		<table class="table">
+		<table class="table" id="ghh">
 		
 			<thead>
 				<tr>
@@ -54,16 +51,18 @@
 			<tbody>
 			#{list items:usuarios, as: 'usuario'}
 				<tr>
-					
+					#{if usuario.matricula != "2018107"}
 					<td>${usuario.nome}</td>
 					<td>${usuario.matricula}</td>
 					<td>${usuario.senha}</td>
 					<td>${usuario.tipoUser}</td>
 					<td>
+					
 					<a href="@{Seacs.editar(usuario.id)}"><span class="iconify"
 							data-icon="line-md:pencil" data-inline="false"></span></a> | <a
 						href="@{Seacs.remover(usuario.id)}"><span class="iconify" data-icon="carbon:trash-can"
 							data-inline="false"></span></a></td>
+					#{/if}
 				</tr>
 			#{/list}
 				<tr>

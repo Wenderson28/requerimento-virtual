@@ -1,4 +1,4 @@
-#{extends 'main.html' /} #{set title:'Pagina Inicial'/}
+#{extends 'main.html' /} #{set title:'RV - Sugestão'/}
 
 
 <style>
@@ -7,26 +7,28 @@
 	margin-bottom: 32px;
 }
 
-textarea {
-	padding: 10px;
-	border-radius: 5px;
-	resize: none;
-}
-
-form button {
-	display: flex;
+#ytr {
+ 	margin-top: 50px;
 }
 </style>
 <body>
 <div class="parte03">
-	<h2>SUGESTÃO</h2>
-	<form>
-		<textarea rows="10" cols="50" name="comentarios" maxlength="300"
-			minlength="10" placeholder="Digite aqui sua sugestão ou crítica!"></textarea>
-		<br>
-		<button type="submit" class="btn btn-primary">Enviar</button>
-		<button type="reset" class="btn btn-primary">Apagar Tudo</button>
-	</form>
-</div>
+	<h3>Sugestão</h3>
+	
+	
+	<ul id="ytr">
+		
+		<li>
+		#{list items:usuarios, as: 'usuario'}
+			#{if usuario?.sugestao}
+			${usuario.sugestao} |
+			#{/if}
+		#{/list}
+		</li>
+		
+	</ul>
+	
+	
+
 </div>
 </body>

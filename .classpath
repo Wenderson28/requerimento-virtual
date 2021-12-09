@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="docviewer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/wende/Downloads/play-1.4.5/framework/play-1.4.5.jar" sourcepath="C:/users/wende/downloads/play-1.4.5/framework/src"/>
+	<classpathentry kind="lib" path="C:/Users/wende/Downloads/play-1.4.5/modules/paginate-head/lib/play-paginate.jar"/>
 	<classpathentry kind="lib" path="C:/Users/wende/Downloads/play-1.4.5/modules/docviewer/lib/play-docviewer.jar"/>
 	<classpathentry kind="lib" path="C:/Users/wende/Downloads/play-1.4.5/framework/lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/wende/Downloads/play-1.4.5/framework/lib/antlr-2.7.7.jar"/>

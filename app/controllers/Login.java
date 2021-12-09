@@ -15,7 +15,7 @@ public class Login extends Controller{
 		
     public static void autenticar(String matricula, String senha) {
     
-    	Usuario usuario = Usuario.find("matricula=? and senha=?", matricula, Crypto.passwordHash(senha)).first();
+    	Usuario usuario = Usuario.find("matricula=? and senha=?", matricula, senha).first();
     		
     	
     	
@@ -27,7 +27,9 @@ public class Login extends Controller{
     	
     		session.put("nomeUsuario", usuario.nome);
     		session.put("matriculaUsuario", usuario.matricula);
+    		session.put("senhaUsuario", usuario.senha);
     		session.put("UsuarioID", usuario.id);
+    		session.put("UsuarioCurso", usuario.curso);
     		
     		if(usuario.tipoUser.equals(TipoUsuario.ALUNO)) {
     			Alunos.inicio() ;

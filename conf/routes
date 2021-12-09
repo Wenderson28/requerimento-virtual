@@ -16,6 +16,8 @@ GET     /public/                                staticDir:public
 
 GET     /uploads/                               staticDir:uploads
 
+GET     /uploads2/                              staticDir:uploads2
+
 GET     /encaminhados/                          staticDir:encaminhados
 
 GET     /devolver/                          	staticDir:devolver

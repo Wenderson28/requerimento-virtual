@@ -6,8 +6,10 @@ import java.util.List;
 
 import java.io.File;
 
+
 import enums.TipoUsuario;
 import models.Professor;
+import models.Requerimento;
 import models.Seac;
 
 import models.Usuario;
@@ -40,6 +42,11 @@ public class Seacs extends Controller{
 		renderTemplate("Seacs/cadEdit.html", usuario, tiposUser);
 		
 	}
+	public static void remover(Long id) {
+		Usuario usuario = Usuario.findById(id);
+		usuario.delete();
+		listar();
+	}
 	public static void cadEdit() {
 		Usuario usuario = (Usuario) Cache.get("usuario");
 		Cache.clear();	
@@ -66,52 +73,152 @@ public class Seacs extends Controller{
 		listar();
 	}
 	
-		
 	
-	public void listarReq(String busca) {
+	public static void salvar(@Valid Requerimento requerimento, File foto, File foto2) {
 		
-		List<Seac> seacs;
-		if(busca == null) {
-			seacs = Seac.findAll();
-		} else {
-			seacs = Seac.find("byMatriculaLike", "%"+busca+"%").fetch();
-			
+		if(foto != null && foto2 != null) {
+			foto.renameTo(new File("./uploads/" + foto.getName()));
+			requerimento.requerimento_anexado = foto.getName();
+			foto2.renameTo(new File("./uploads2/" + foto2.getName()));
+			requerimento.requerimento_anexado2 = foto2.getName();
+			requerimento.save();
+			listar_Requerimento(null);
+		} else if(foto != null){
+			foto.renameTo(new File("./uploads/" + foto.getName()));
+			requerimento.requerimento_anexado = foto.getName();
+			requerimento.save();
+			listar_Requerimento(null);
+		} else if(foto2 != null) {
+			foto2.renameTo(new File("./uploads2/" + foto2.getName()));
+			requerimento.requerimento_anexado2 = foto2.getName();
+			requerimento.save();	
+			listar_Requerimento(null);
 		}
-		render(seacs);
-	}
-
-
-	public static void remover(Long id) {
-		Usuario usuario = Usuario.findById(id);
-		usuario.delete();
-		listar();
-	}
 	
-	
-	
-	public void listarReq_Def(String busca) {
 		
-		List<Professor> professores;
-		if(busca == null) {
-			professores = Professor.findAll();
-		} else {
-			professores = Professor.find("byMatriculaLike", "%"+busca+"%").fetch();
+		if (validation.hasErrors()){
+			validation.keep();
 			
+			flash.error("Cadastro Inválido!");
+			Cache.set("requerimento", requerimento);				
+			listar_Requerimento(null);
+			
+		}		
+		
+		
+		if(requerimento.sit != null && requerimento.matriculaProf == null) {
+			flash.success("Requerimento Processado!");
+			requerimento.save();	
 		}
-		render(professores);
+		if(requerimento.sit == null && requerimento.matriculaProf != null) {
+			flash.success("Requerimento Processado!");
+			requerimento.save();
+		}
+		if(requerimento.sit == null && requerimento.matriculaProf == null) {
+			flash.error("Processamento inválido! (selecione uma opção)");
+			listar_Requerimento(null);
+		}
+		if(requerimento.matriculaProf != null && requerimento.sit != null) {		
+			flash.error("Processamento inválido! (selecione apenas uma opção)");
+							
+			listar_Requerimento(null);
+		}
+		
+		listar_Requerimento(null);
+	}
+	
+	
+	public static void listar_Requerimento(String busca) {
+		Requerimento requerimento = (Requerimento) Cache.get("requerimento");
+		Cache.clear();	
+
+		List<Requerimento> requerimentos;
+		List<Usuario> usuarios = Usuario.findAll();
+		List<TipoUsuario> tiposUser = Arrays.asList(TipoUsuario.PROFESSOR);
+			if(busca == null) {
+				requerimentos = Requerimento.findAll();
+			} else {
+				requerimentos = Requerimento.find("byMotivoLike", "%"+busca+"%").fetch();
+				
+			}
+	
+		render(requerimentos, usuarios);
+		}
+	public static void analisar() {
+		Usuario usuario = (Usuario) Cache.get("usuario");
+
+		
+		Cache.clear();	
+		render(usuario);
+	}
+	
+	public static void edit(Long id) {
+		List<Usuario> usuarios = Usuario.findAll();
+		List<Requerimento> requerimentos = Requerimento.findAll();
+		Requerimento requerimento = Requerimento.findById(id);		
+		renderTemplate("Seacs/analisar.html", usuarios, requerimento, requerimentos);
+		
+	}
+	
+	public static void abrirReqEnc() {
+		Usuario usuario = (Usuario) Cache.get("usuario");
+
+		
+		Cache.clear();	
+		render(usuario);
+	}
+	
+	public static void edit2(Long id) {
+		List<Usuario> usuarios = Usuario.findAll();
+		List<Requerimento> requerimentos = Requerimento.findAll();
+		Requerimento requerimento = Requerimento.findById(id);		
+		renderTemplate("Seacs/abrirReqEnc.html", usuarios, requerimento, requerimentos);
+		
 	}
 	
 	
 	
 	
+	
+	
+	public static void encReq(String busca) {	
+		List<Usuario> usuarios = Usuario.findAll();
+		List<Requerimento> requerimentos;
+			if(busca == null) {
+				requerimentos = Requerimento.findAll();
+			} else {
+				requerimentos = Requerimento.find("byMatriculaProfLike", "%"+busca+"%").fetch();
+				
+			}
+			
+			render(requerimentos, usuarios);
+		
+		}
+	
+	
+	
+	public static void listarReq_Def(String busca) {			
+		List<Requerimento> requerimentos;
+			if(busca == null) {
+				requerimentos = Requerimento.findAll();
+			} else {
+				requerimentos = Requerimento.find("byMotivoLike", "%"+busca+"%").fetch();
+				
+			}
+		
+			render(requerimentos);
+	}
 	
 	
 	public static void sugestao() {
-		render();
+		List<Usuario> usuarios = Usuario.findAll();
+		render(usuarios);
 	}
+	
 	public static void Contato() {
 		render();
 	}
 		
+	
 }
 

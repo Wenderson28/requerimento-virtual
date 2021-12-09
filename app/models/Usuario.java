@@ -5,39 +5,50 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 
 import enums.TipoUsuario;
-
+import play.data.validation.Equals;
 import play.data.validation.MaxSize;
 import play.data.validation.MinSize;
 import play.data.validation.Required;
-import play.db.jpa.Blob;
+import play.data.validation.Unique;
 import play.db.jpa.Model;
 import play.libs.Crypto;
 
 @Entity
 public class Usuario extends Model{
 	
-	public Blob PDF;
 	
-	
+	@MinSize(10)
 	@Required
 	public String nome;
 	
 	@MinSize(6)
 	@MaxSize(15)
-	@Required
+	@Unique
+	@Required	
 	public String matricula;
 	
-	@MinSize(6)
-	@Required
-	public String senha;
-
 	
-	public void setSenha(String s) {
+	@Required
+	@Equals("confirmacaoSenha")
+	public String senha;
+	
+	@Transient
+	public String confirmacaoSenha;
+	
+	public String fotoperfil;
+	
+	public String curso;
+	
+	public String sugestao;
+	
+	public void setConfirmacaoSenha(String senha) {
 		
-		senha = Crypto.passwordHash(s);
+			confirmacaoSenha = senha;
+		
 	}
 	
 	
@@ -55,5 +66,7 @@ public class Usuario extends Model{
 		tipoUser = TipoUsuario.SEAC;
 		
 	}
+	
+
 	
 }

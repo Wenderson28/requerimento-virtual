@@ -1,10 +1,14 @@
 package controllers;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
+import enums.TipoUsuario;
 import models.Professor;
+import models.Requerimento;
 import models.Seac;
+import models.Usuario;
 import play.cache.Cache;
 import play.data.validation.Valid;
 import play.mvc.Controller;
@@ -12,59 +16,159 @@ import play.mvc.Controller;
 public class Professores extends Controller{
 	
 	public static void inicio(){
-		render();
+		List<Usuario> usuarios = Usuario.findAll();
+		render(usuarios);
 	}
-	public static void encReq() {
-		Professor professor = (Professor) Cache.get("professor");
-		Cache.clear();
-		render(professor);
+	public static void sugestao(){
+		List<Usuario> usuarios = Usuario.findAll();
+		render(usuarios);
+	}
+	public static void contato(){
+		List<Usuario> usuarios = Usuario.findAll();
+		render(usuarios);
+	}
+	public static void saveSugestao(Usuario usuario){	
+					
+	usuario.save();
+	flash.success("Agradecemos pela sugestão!");
+	sugestao();
 	}
 	
-	public static void SalvarEnc(@Valid Professor professor, File foto) {
+	//Editar perfil------------------------------------------
+	public static void meuperfil(){
+		List<Usuario> usuarios = Usuario.findAll();
+		render(usuarios);
+	}
+	
+	public static void editar(Long id) {
+		List<Usuario> usuarios = Usuario.findAll();
+		Usuario usuario = Usuario.findById(id);		
+		renderTemplate("Professores/cadEdit.html", usuario, usuarios);
 		
-		if(foto == null) {
-			flash.error("Adicione o arquivo!");
-			encReq();
+	}
+	
+	public static void cadEdit() {
+		Usuario usuario = (Usuario) Cache.get("usuario");	
+		Cache.clear();	
+		render(usuario);
+	
+	}
+	
+	public static void salve(@Valid Usuario usuario, File foto) {
+		if(foto != null){
+			foto.renameTo(new File("./uploads/" + foto.getName()));
+			usuario.fotoperfil = foto.getName();
+			flash.success("Requerimento Anexado!");
+			usuario.save();
+			meuperfil();
 		}
-		foto.renameTo(new File("./encaminhados/" + foto.getName()));
-		
-		professor.requerimento_prof = foto.getName();
-		professor.save();
-		flash.success("Requerimento Anexado!");
-		encReq();
+			
+		if(validation.hasErrors()){
+			validation.keep();		
+			flash.error("Cadastro Inválido!");
+			Cache.set("usuario", usuario);		
+			cadEdit();
+		}		
+		usuario.save();
+		flash.success("Dados atualizados com sucesso!");
+		meuperfil();
 	}
 	
-	public void listarEnc(String busca) {
+	//----------------------------------------------------------------
+	
+	
+	public static void salvar(@Valid Requerimento requerimento, File foto, File foto2) {
 		
-		List<Professor> professores;
+		if(foto != null && foto2 != null) {
+			foto.renameTo(new File("./uploads/" + foto.getName()));
+			requerimento.requerimento_anexado = foto.getName();
+			foto2.renameTo(new File("./uploads2/" + foto2.getName()));
+			requerimento.requerimento_anexado2 = foto2.getName();
+			requerimento.save();
+			listarEnc(null);
+		} else if(foto != null){
+			foto.renameTo(new File("./uploads/" + foto.getName()));
+			requerimento.requerimento_anexado = foto.getName();
+			requerimento.save();
+			listarEnc(null);
+		} else if(foto2 != null) {
+			foto2.renameTo(new File("./uploads2/" + foto2.getName()));
+			requerimento.requerimento_anexado2 = foto2.getName();
+			requerimento.save();	
+			listarEnc(null);
+		}
+		if (validation.hasErrors()){
+			validation.keep();
+			
+			flash.error("Cadastro Inválido!");
+			Cache.set("requerimento", requerimento);				
+			listarEnc(null);
+			
+		}		
+		
+		requerimento.save();
+		flash.success("Requerimento Processado!");
+		listarEnc(null);
+	}
+	
+	public static void listarEnc(String busca) {
+		Requerimento requerimento = (Requerimento) Cache.get("requerimento");
+		Cache.clear();	
+
+		List<Requerimento> requerimentos;
+		List<Usuario> usuarios = Usuario.findAll();
+			if(busca == null) {
+				requerimentos = Requerimento.findAll();
+			} else {
+				requerimentos = Requerimento.find("byMatriculaLike", "%"+busca+"%").fetch();
+				
+			}
+	
+		render(requerimentos, usuarios);
+		}
+	
+	public static void encReq(String busca) {
+		List<Usuario> usuarios = Usuario.findAll();
+		
+		List<Requerimento> requerimentos;
 		if(busca == null) {
-			professores = Professor.findAll();
+			requerimentos = Requerimento.findAll();
 		} else {
-			professores = Professor.find("byNumero_proLike", "%"+busca+"%").fetch();
+			requerimentos = Requerimento.find("byMatriculaLike", "%"+busca+"%").fetch();
 			
 		}
-		render(professores);
+	render(requerimentos, usuarios);
 	}
 	
-	
-	public static void devolverReq() {
-		Professor professor = (Professor) Cache.get("professor");
-		Cache.clear();
-		render(professor);
+	public static void finalizados() {
+		Usuario usuario = (Usuario) Cache.get("usuario");
+
+		
+		Cache.clear();	
+		render(usuario);
 	}
 	
-	public static void salvarDev(@Valid Professor professor, File foto) {
+	public static void edit3(Long id) {
+		List<Usuario> usuarios = Usuario.findAll();
+		List<Requerimento> requerimentos = Requerimento.findAll();
+		Requerimento requerimento = Requerimento.findById(id);		
+		renderTemplate("Professores/finalizados.html", usuarios, requerimento, requerimentos);
 		
-		if(foto == null) {
-			flash.error("Adicione o arquivo!");
-			devolverReq();
-		}
-		foto.renameTo(new File("./devolver/" + foto.getName()));
+	}
+	public static void abrirFinalizados() {
+		Usuario usuario = (Usuario) Cache.get("usuario");
+
 		
-		professor.requerimento = foto.getName();
-		professor.save();
-		flash.success("Requerimento Anexado!");
-		devolverReq();
+		Cache.clear();	
+		render(usuario);
+	}
+	
+	public static void edit(Long id) {
+		List<Usuario> usuarios = Usuario.findAll();
+		List<Requerimento> requerimentos = Requerimento.findAll();
+		Requerimento requerimento = Requerimento.findById(id);		
+		renderTemplate("Professores/abrirFinalizados.html", usuarios, requerimento, requerimentos);
+		
 	}
 	
 }

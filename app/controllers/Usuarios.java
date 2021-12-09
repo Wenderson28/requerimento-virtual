@@ -4,17 +4,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import enums.TipoUsuario;
+import models.Requerimento;
 import models.Seac;
 import models.Usuario;
 import play.cache.Cache;
+import play.data.validation.MaxSize;
 import play.data.validation.Valid;
+import play.libs.Crypto;
 import play.mvc.Controller;
 
 public class Usuarios extends Controller {
+	 
 	public static void cadastro() {
 		Usuario usuario = (Usuario) Cache.get("usuario");
 		Cache.clear();	
 		List<TipoUsuario> tiposUser = Arrays.asList(TipoUsuario.PROFESSOR, TipoUsuario.ALUNO);
+		
 		render(tiposUser, usuario); 	
 	}
 	
@@ -34,14 +39,13 @@ public class Usuarios extends Controller {
 				
 				cadastro();
 			}
+			
+			
 				
 		usuario.save();
 		flash.success("Cadastro Concluido!");
-		cadastro();
+		render("Application/login.html");
 	}
-	
-	
-	
-	
+			
 	
 }

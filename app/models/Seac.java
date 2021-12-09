@@ -15,6 +15,7 @@ public class Seac extends Model{
 	public String nome;
 	@Required
 	public String matricula;
+	
 	public String requerimento;
 		
 }

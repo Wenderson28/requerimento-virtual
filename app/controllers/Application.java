@@ -22,7 +22,12 @@ public class Application extends Controller {
     	render();
     }
  
-
+    public static void main2() {
+    	
+    	List<Usuario> usuarios = Usuario.findAll();
+    	render(usuarios);
+    }
+ 
     
 
 }
